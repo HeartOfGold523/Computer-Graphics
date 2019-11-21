@@ -1,0 +1,7 @@
+INDEX VERSION 1.131+C:\Users\ashco\Documents\Transfer Credits\UMUC\Graphics\Project 2\.metadata\.plugins\org.eclipse.jdt.core
+3010713937.index
+595921088.index
+360471921.index
+2800008428.index
+1788824111.index
+1248545562.index

@@ -1,0 +1,217 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.jogamp.opengl.*;
+import com.jogamp.opengl.awt.*;
+
+//this class implements the OpenGL side of creating a display, rendering the shapes I've drawn in the Shapes class, and creating the animation of different transformations
+public class Scene3D extends JPanel implements GLEventListener
+{
+	//an instance of Shapes class containing the shapes I've drawn
+	private Shapes myShapes = new Shapes();
+	private int frameNumber;
+	private Timer animationTimer;
+	
+	//default constructor
+	public Scene3D()
+	{
+		GLCapabilities glcaps = new GLCapabilities(null);
+		GLJPanel display = new GLJPanel(glcaps);
+		
+		//as required, the minimum size of display is 640x480
+		display.setPreferredSize(new Dimension(800,600));
+		display.addGLEventListener(this);
+		setLayout(new BorderLayout());
+		add(display, BorderLayout.CENTER);
+		
+		//start our animation
+		animationTimer = new Timer(20, new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				frameNumber++;
+				display.repaint();
+			}});
+		animationTimer.start();
+	}
+	
+	//method to implement GLEventListener interface
+	//this method is called by object of GLAutoDrawable interface immediately after OpenGL context is initialized
+	public void init(GLAutoDrawable drawable)
+	{
+		GL2 gl2 = drawable.getGL().getGL2();
+		
+		//required for 3D drawings
+		gl2.glEnable(GL2.GL_DEPTH_TEST);
+		gl2.glLineWidth(2);
+		gl2.glShadeModel(GL2.GL_SMOOTH);
+		gl2.glEnable(GL2.GL_COLOR_MATERIAL);
+		
+		//setting background color
+		gl2.glClearColor(0.4f, 0.5f, 0.6f, 1);
+		
+		//setting up our coordinate system
+		gl2.glMatrixMode(GL2.GL_PROJECTION);
+		gl2.glLoadIdentity();
+		//sets up orthographic with x ranging from -15 to 15, y ranging from -15 to 15, and z (near/far perspective) ranging from -5 to 5
+		gl2.glOrtho(-15, 15, -15, 15, -5, 5);
+		gl2.glMatrixMode(GL2.GL_MODELVIEW);
+		
+		gl2.glClearDepthf(1.0f);
+		gl2.glDepthFunc(GL2.GL_LEQUAL);
+		gl2.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, gl2.GL_NICEST);
+		
+		//allows us to see transparency levels of objects
+		gl2.glEnable(GL2.GL_BLEND);
+		gl2.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+	}
+	
+	//method to implement GLEventListener interface
+	//this method contains logic used to draw graphical elements using OpenGL
+	public void display(GLAutoDrawable drawable)
+	{
+		GL2 gl2 = drawable.getGL().getGL2();
+		//we need depth buffer for 3D graphics
+		gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
+		gl2.glLoadIdentity();
+		
+		//shape 1 = Triangle with edges only
+		gl2.glPushMatrix();
+		gl2.glLineWidth(2);
+		
+		//translated to coordinate (-8, 8, 0)
+		gl2.glTranslated(-8.0, 8.0, 0);
+		//rotated 90 degrees about vector (1.5, 2, -3)
+		gl2.glRotated(90, 1.5, 2, -3);
+		//scaled by 2x in all directions to display proportionally in window
+		gl2.glScaled(2.0, 2.0, 2.0);
+		//rotating infinitely about z-axis
+		gl2.glRotated(frameNumber * 1.3, 0, 0, 1);
+		
+		myShapes.drawShape1(gl2);
+		gl2.glPopMatrix();
+		
+		
+		
+		//shape 2 = Cube
+		gl2.glPushMatrix();
+		gl2.glLineWidth(2);
+		
+		//translated to coordinate (0, 8, 0)
+		gl2.glTranslated(0, 8.0, 0);
+		//rotated 30 degrees about vector (1.5, -2, 3)
+		gl2.glRotated(30, 1.5, -2, 3);
+		//scaled by 2.0x in all directions to display proportionally in window
+		gl2.glScaled(2.0, 2.0, 2.0);
+		//rotating infinitely about x-axis and y-axis
+		gl2.glRotated(-frameNumber * 1.3, 1, 1, 0);
+		
+		myShapes.drawShape2(gl2);
+		gl2.glPopMatrix();
+		
+		
+		
+		//shape 3 = Cylinder
+		gl2.glPushMatrix();
+		gl2.glLineWidth(2);
+		
+		//has a moderately slow rotational path about x-axis and y-axis throughout animation
+		gl2.glTranslated(2 * Math.cos(.025 * frameNumber), 2*Math.sin(.025 * frameNumber), 0.0);
+		//translated to coordinate (8, 8, 0)
+		gl2.glTranslated(8.0, 8.0, 0);
+		//rotated 45 degrees about vector (1.5, -2, 3)
+		gl2.glRotated(45, 1.5, -2, 3);
+		//scaled by 2.0x in all directions to display proportionally in window
+		gl2.glScaled(2.0, 2.0, 2.0);
+		//rotating infinitely about y-axis and z-axis
+		gl2.glRotated(-frameNumber * 1.3, 0, 1, 1);
+		
+		myShapes.drawShape3(gl2, 0.5, 1, 32, 10, 5);
+		gl2.glPopMatrix();
+		
+		
+		
+		//shape 4 = '+' symbol
+		gl2.glPushMatrix();
+		gl2.glLineWidth(2);
+		
+		//path across entire x-portion of screen throughout animation
+		gl2.glTranslated(-17 + 34 * (frameNumber % 500) / 500.0, 0, 0);
+		//rotated 45 degrees about vector (1.5, -2, 3)
+		gl2.glRotated(45, 1.5, -2, 3);
+		//scaled by 0.5x in all directions to display proportionally in window
+		gl2.glScaled(0.5, 0.5, 0.5);
+		//rotating about y-axis
+		gl2.glRotated(-frameNumber * 1.3, 0, 1, 0);
+		
+		myShapes.drawShape4(gl2);
+		gl2.glPopMatrix();
+		
+		
+		
+		//shape 5 = Tetrahedron
+		gl2.glPushMatrix();
+		gl2.glLineWidth(2);
+		
+		//translated to coordinate (-8, -8, 0)
+		gl2.glTranslated(-8.0, -8.0, 0);
+		//rotated 20 degrees about vector (1.5, -2, 3)
+		gl2.glRotated(20, 1.5, -2, 3);
+		//increasing in size in all directions until cap then starting over throughout animation cycle
+		gl2.glScaled(0.99 * (frameNumber % 250) / 250, 0.99 * (frameNumber % 250) / 250, 0.99 * (frameNumber % 250) / 250);
+		//rotating about x-axis
+		gl2.glRotated(-frameNumber * 1.3, 1, 0, 0);
+		
+		myShapes.drawShape5(gl2);
+		gl2.glPopMatrix();
+		
+		
+		
+		//shape 6 = Icosahedron
+		gl2.glPushMatrix();
+		gl2.glLineWidth(2);
+		
+		//translated to coordinate (0, -5, 0)
+		gl2.glTranslated(0.0, -5.0, 0);
+		//rotated 30 degrees
+		gl2.glRotated(30, 1.5, -2, 3);
+		//scaled by 1.1x in all directions to display proportionally in window
+		gl2.glScaled(1.1, 1.1, 1.1);
+		//rotating about x axis throughout animation
+		gl2.glRotated(-frameNumber * 0.7, 1, 0, 0);
+		
+		myShapes.drawShape6(gl2);
+		gl2.glPopMatrix();
+	}
+	
+	//method to implement GLEvenetListener interface
+	//no need to override this method
+	public void dispose(GLAutoDrawable arg0)
+	{
+		
+	}
+	
+	//method to implement GLEventListener interface
+	//no need to override this method
+	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4)
+	{
+		
+	}
+	
+	//main method, mostly handling important JFrame info
+	public static void main(String[] args)
+	{
+		JFrame window = new JFrame("My Project 2 Scene");
+		Scene3D panel = new Scene3D();
+		window.setContentPane(panel);
+		window.pack();
+		window.setResizable(false);
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		window.setLocation(
+				(screen.width - window.getWidth()) / 2,
+				(screen.height - window.getHeight()) / 2);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setVisible(true);
+	}
+}

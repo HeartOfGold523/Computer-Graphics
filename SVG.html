@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SVG Graphics</title>
+	</head>
+	<body>
+		<svg width="500" height="500" viewBox="0 0 10 6">
+			<!-- Background sky/street -->
+			<rect x="0" y="0" width="10" height="6" fill="rgb(0, 200, 255)" />
+			<rect x="0" y="4" width="10" height="2" fill="rgb(240,240,240)" />
+			
+			<!-- Animated Street Divider -->
+			<rect x="2" y="4.5" width="0.5" height="0.5" fill="rgb(255,255,0)" >
+				<animate attributeName="x" from="2" to="0" dur="1.0s" repeatCount="indefinite" />
+			</rect>
+			<rect x="4" y="4.5" width="0.5" height="0.5" fill="rgb(255,255,0)" >
+				<animate attributeName="x" from="4" to="2" dur="1.0s" repeatCount="indefinite" />
+			</rect>
+			<rect x="6" y="4.5" width="0.5" height="0.5" fill="rgb(255,255,0)" >
+				<animate attributeName="x" from="6" to="4" dur="1.0s" repeatCount="indefinite" />
+			</rect>
+			<rect x="8" y="4.5" width="0.5" height="0.5" fill="rgb(255,255,0)" >
+				<animate attributeName="x" from="8" to="6" dur="1.0s" repeatCount="indefinite" />
+			</rect>
+			<rect x="10" y="4.5" width="0.5" height="0.5" fill="rgb(255,255,0)" >
+				<animate attributeName="x" from="10" to="8" dur="1.0s" repeatCount="indefinite" />
+			</rect>
+			
+			<!-- Car and Animation -->
+			<!-- Car Body with lines, lights, and bumpers -->
+			<g>
+				<rect x="1.5" y="1" width="3" height="2" fill="transparent" stroke="crimson" stroke-width="0.25" rx="10"></rect>
+				<rect x="1" y="2" width="4" height="1.5" fill="crimson" rx="20"></rect>
+				<rect x="2.15" y="1.2" width="0.1" height="2" fill="crimson"></rect>
+				<rect x="3.85" y="1.2" width="0.1" height="2" fill="crimson"></rect>
+				<rect x="1.25" y="3.1" width="0.3" height="0.25" fill="#999" rx="10"></rect>
+				<rect x="4.5" y="3.1" width="0.3" height="0.25" fill="#999" rx="10"></rect>
+				<circle cx="5" cy="2.75" r="0.25" fill="orange"></circle>
+				<circle cx="1" cy="2.75" r="0.25" fill="orange"></circle>
+				<animateTransform attributeName="transform" type="translate" from="0 0" to="0 0.2" dur="1.0s" calcMode="discrete" repeatCount="indefinite" />
+			</g>
+			<!-- Left Wheel -->
+			<g>
+				<circle cx="2" cy="3.65" r="0.5" fill="rgb(0,0,0)"></circle>
+				<circle cx="2" cy="3.65" r="0.25" fill="rgb(200,200,200)"></circle>
+				<rect x="1.95" y="3.15" width="0.1" height="1" fill="rgb(200,200,200)">
+					<animateTransform attributeName="transform" type="rotate" from="0 2 3.65" to="180 2 3.65" dur="1.5s" repeatCount="indefinite" />
+				</rect>
+				<animateTransform attributeName="transform" type="translate" from="0 0" to="0 0.2" dur="1.0s" calcMode="discrete" repeatCount="indefinite" />
+			</g>
+			<!-- Right Wheel -->
+			<g>
+				<circle cx="4" cy="3.65" r="0.5" fill="rgb(0,0,0)"></circle>
+				<circle cx="4" cy="3.65" r="0.25" fill="rgb(200,200,200)"></circle>
+				<rect x="3.95" y="3.15" width="0.1" height="1" fill="rgb(200,200,200)">
+					<animateTransform attributeName="transform" type="rotate" from="0 4 3.65" to="180 4 3.65" dur="1.5s" repeatCount="indefinite" />
+				</rect>
+				<animateTransform attributeName="transform" type="translate" from="0 0" to="0 0.2" dur="1.0s" calcMode="discrete" repeatCount="indefinite" />
+			</g>
+		</svg>
+	</body>
+</html>

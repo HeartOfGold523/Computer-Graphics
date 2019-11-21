@@ -1,0 +1,60 @@
+import com.jogamp.opengl.GL2;
+
+public class Shapes
+{
+	//shape 1. this creates a 3D triangle with only edges drawn while the faces of the triangle are not filled in
+	public static void drawShape1(GL2 gl2)
+	{
+		//begin drawing
+		gl2.glBegin(GL2.GL_LINE_LOOP);
+		
+		//front side
+		gl2.glColor3f( 1.0f, 0.0f, 0.0f );
+		gl2.glVertex3f( 0f, 1.5f, 0.0f );
+		gl2.glColor3f( 0.0f, 1.0f, 0.0f );
+		gl2.glVertex3f( -.5f, -.5f, .5f );
+		gl2.glColor3f( 0.0f, 0.0f, 1.0f );
+		gl2.glVertex3f( .5f, -.5f, .5f );
+		
+		//right side
+		gl2.glColor3f( 1.0f, 0.0f, 0.0f );
+		gl2.glVertex3f( 0f, 1.5f, 0.0f );
+		gl2.glColor3f( 0.0f, 0.0f, 1.0f );
+		gl2.glVertex3f( .5f, -.5f, .5f );
+		gl2.glColor3f( 0.0f, 1.0f, 0.0f );
+		gl2.glVertex3f( .5f, -.5f, -.5f );
+		
+		//back side
+		gl2.glColor3f( 1.0f, 0.0f, 0.0f );
+		gl2.glVertex3f( 0f, 1.5f, 0.0f );
+		gl2.glColor3f( 0.0f, 1.0f, 0.0f );
+		gl2.glVertex3f( .5f, -.5f, -.5f );
+		gl2.glColor3f( 0.0f, 0.0f, 1.0f );
+		gl2.glVertex3f( -.5f, -.5f, -.5f );
+		
+		//left side
+		gl2.glColor3f( 1.0f, 0.0f, 0.0f );
+		gl2.glVertex3f( 0f, 1.5f, 0.0f );
+		gl2.glColor3f( 0.0f, 0.0f, 1.0f );
+		gl2.glVertex3f( -.5f, -.5f, -.5f );
+		gl2.glColor3f( 0.0f, 1.0f, 0.0f );
+		gl2.glVertex3f( -.5f, -.5f, .5f );
+		
+		//done drawing
+		gl2.glEnd();
+		gl2.glFlush();
+	}
+	
+	//helper function for shape 2. this function creates squares for each of the 6 sides of our cube.
+	//each square will be completely filled in with the 4 corners of each square a different color
+	private static void shape2Helper()
+	{
+		
+	}
+	
+	//shape 2. this creates a cube using a helper method to create each of the 6 sides
+	public static void drawShape2(GL2 gl2)
+	{
+		
+	}
+}
